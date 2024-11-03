@@ -1,0 +1,20 @@
+{
+  "name": "gym-ai-fitness",
+  "version": "1.0.0",
+  "description": "AI Fitness Coach Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd backend && node server.js",
+    "build": "cd frontend && npm install && npm run build",
+    "install-backend": "cd backend && npm install",
+    "postinstall": "npm run install-backend && npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
