@@ -1,36 +1,29 @@
 const theme = {
   colors: {
-    primary: '#1a73e8',
-    primaryDark: '#1557b0',
-    secondary: '#202124',
-    background: '#f8f9fa',
-    surface: '#ffffff',
-    text: {
-      primary: '#202124',
-      secondary: '#5f6368',
-      light: '#ffffff'
+    primary: '#FFD700',
+    secondary: '#000000',
+    white: '#FFFFFF',
+    background: {
+      main: '#1A1A1A',
+      card: '#242424',
+      hover: '#2A2A2A',
     },
-    border: '#dadce0',
-    error: '#d93025',
-    success: '#188038'
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#FFD700',
+      dark: '#000000',
+    },
+    border: '#FFD700',
+  },
+  animations: {
+    buttonHover: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+    fadeIn: 'fadeIn 0.5s ease-in-out',
+    slideIn: 'slideIn 0.5s ease-in-out',
   },
   shadows: {
-    small: '0 2px 4px rgba(0,0,0,0.1)',
-    medium: '0 4px 8px rgba(0,0,0,0.12)',
-    large: '0 8px 16px rgba(0,0,0,0.14)',
-    hover: '0 8px 28px rgba(0,0,0,0.28)'
+    yellow: '0 0 15px rgba(255, 215, 0, 0.3)',
+    card: '0 4px 6px rgba(0, 0, 0, 0.1)',
   },
-  transitions: {
-    default: 'all 0.3s ease',
-    fast: 'all 0.15s ease',
-    slow: 'all 0.45s ease'
-  },
-  borderRadius: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
-    round: '50%'
-  }
 };
 
 export default theme; 

@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import theme from '../styles/theme';
-import config from '../config/config';
 
 const AiAssessment = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     height: '',
     weight: '',
     age: '',
-    goals: 'Weight Loss', // Default value
+    goals: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +26,7 @@ const AiAssessment = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://gym-ai-fitness.onrender.com/api/ai/generate-plan', {
+      const response = await fetch('http://localhost:5000/api/ai/generate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,19 +50,22 @@ const AiAssessment = () => {
 
   return (
     <div style={styles.container}>
-      {error && <div style={styles.error}>{error}</div>}
-      {loading ? (
-        <div style={styles.loading}>Generating your plan...</div>
-      ) : (
+      <div style={styles.formCard}>
+        <h2 style={styles.title}>AI Fitness Assessment</h2>
+        <p style={styles.subtitle}>Let's create your personalized fitness plan</p>
+
+        {error && <div style={styles.error}>{error}</div>}
+
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Height (cm)</label>
             <input
               type="number"
+              name="height"
               value={formData.height}
-              onChange={(e) => setFormData({...formData, height: e.target.value})}
-              required
+              onChange={handleChange}
               style={styles.input}
+              required
             />
           </div>
 
@@ -64,10 +73,11 @@ const AiAssessment = () => {
             <label style={styles.label}>Weight (kg)</label>
             <input
               type="number"
+              name="weight"
               value={formData.weight}
-              onChange={(e) => setFormData({...formData, weight: e.target.value})}
-              required
+              onChange={handleChange}
               style={styles.input}
+              required
             />
           </div>
 
@@ -75,40 +85,71 @@ const AiAssessment = () => {
             <label style={styles.label}>Age</label>
             <input
               type="number"
+              name="age"
               value={formData.age}
-              onChange={(e) => setFormData({...formData, age: e.target.value})}
-              required
+              onChange={handleChange}
               style={styles.input}
+              required
             />
           </div>
 
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Goals</label>
+            <label style={styles.label}>Fitness Goals</label>
             <select
+              name="goals"
               value={formData.goals}
-              onChange={(e) => setFormData({...formData, goals: e.target.value})}
+              onChange={handleChange}
               style={styles.select}
+              required
             >
-              <option value="Weight Loss">Weight Loss</option>
-              <option value="Muscle Gain">Muscle Gain</option>
-              <option value="General Fitness">General Fitness</option>
+              <option value="">Select a goal</option>
+              <option value="weight-loss">Weight Loss</option>
+              <option value="muscle-gain">Muscle Gain</option>
+              <option value="endurance">Endurance</option>
+              <option value="flexibility">Flexibility</option>
             </select>
           </div>
 
-          <button type="submit" style={styles.button}>
-            Generate Plan
+          <button 
+            type="submit" 
+            style={styles.button}
+            disabled={loading}
+          >
+            {loading ? 'Generating Plan...' : 'Generate AI Plan'}
           </button>
         </form>
-      )}
+      </div>
     </div>
   );
 };
 
 const styles = {
   container: {
-    maxWidth: '800px',
-    margin: '100px auto',
+    minHeight: '100vh',
+    backgroundColor: theme.colors.background.main,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: '2rem',
+  },
+  formCard: {
+    backgroundColor: theme.colors.background.card,
+    padding: '2rem',
+    borderRadius: '12px',
+    width: '100%',
+    maxWidth: '500px',
+    boxShadow: theme.shadows.card,
+  },
+  title: {
+    color: theme.colors.primary,
+    fontSize: '2rem',
+    textAlign: 'center',
+    marginBottom: '0.5rem',
+  },
+  subtitle: {
+    color: theme.colors.text.primary,
+    textAlign: 'center',
+    marginBottom: '2rem',
   },
   form: {
     display: 'flex',
@@ -122,42 +163,63 @@ const styles = {
   },
   label: {
     color: theme.colors.text.primary,
-    fontSize: '1rem',
-    fontWeight: 500,
+    fontSize: '0.9rem',
   },
   input: {
     padding: '0.75rem',
-    borderRadius: theme.borderRadius.medium,
+    borderRadius: '6px',
     border: `1px solid ${theme.colors.border}`,
+    backgroundColor: theme.colors.background.main,
+    color: theme.colors.text.primary,
     fontSize: '1rem',
+    width: '100%',
+    '&:focus': {
+      outline: 'none',
+      borderColor: theme.colors.primary,
+      boxShadow: theme.shadows.yellow,
+    },
   },
   select: {
     padding: '0.75rem',
-    borderRadius: theme.borderRadius.medium,
+    borderRadius: '6px',
     border: `1px solid ${theme.colors.border}`,
+    backgroundColor: theme.colors.background.main,
+    color: theme.colors.text.primary,
     fontSize: '1rem',
+    width: '100%',
+    '&:focus': {
+      outline: 'none',
+      borderColor: theme.colors.primary,
+      boxShadow: theme.shadows.yellow,
+    },
   },
   button: {
     backgroundColor: theme.colors.primary,
-    color: theme.colors.text.light,
+    color: theme.colors.text.dark,
     padding: '1rem',
-    borderRadius: theme.borderRadius.medium,
+    borderRadius: '6px',
     border: 'none',
     fontSize: '1rem',
-    fontWeight: 500,
+    fontWeight: 'bold',
     cursor: 'pointer',
+    transition: theme.animations.buttonHover,
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: theme.shadows.yellow,
+    },
+    '&:disabled': {
+      opacity: 0.7,
+      cursor: 'not-allowed',
+    },
   },
   error: {
-    color: theme.colors.error,
-    padding: '1rem',
-    borderRadius: theme.borderRadius.medium,
-    backgroundColor: `${theme.colors.error}10`,
-    marginBottom: '1rem',
-  },
-  loading: {
+    color: 'red',
     textAlign: 'center',
-    padding: '2rem',
-  }
+    marginBottom: '1rem',
+    padding: '0.5rem',
+    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    borderRadius: '4px',
+  },
 };
 
 export default AiAssessment;
