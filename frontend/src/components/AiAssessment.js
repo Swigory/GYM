@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import theme from '../styles/theme';
+import config from '../config/config';
 
 const AiAssessment = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AiAssessment = () => {
     try {
       console.log('Sending data:', formData);
 
-      const response = await fetch('http://localhost:5000/api/ai/generate-plan', {
+      const response = await fetch(`${config.apiUrl}/api/ai/generate-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,21 +4,20 @@ require('dotenv').config();
 
 const app = express();
 
-// Enable CORS for all routes
+// Enable CORS for all origins in development
 app.use(cors({
-  origin: 'http://localhost:3000', // Your frontend URL
-  credentials: true
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://your-frontend-url.netlify.app'  // We'll get this URL after deploying frontend
+    : 'http://localhost:3000'
 }));
 
-// Body parser middleware
 app.use(express.json());
 
 // Test route
-app.get('/test', (req, res) => {
-  res.json({ message: 'Backend is working!' });
+app.get('/', (req, res) => {
+  res.json({ message: 'AI Fitness API is running!' });
 });
 
-// AI routes
 app.use('/api/ai', require('./routes/api/ai'));
 
 const PORT = process.env.PORT || 5000;
