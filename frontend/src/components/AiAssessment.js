@@ -20,9 +20,7 @@ const AiAssessment = () => {
     setError(null);
 
     try {
-      console.log('Sending data:', formData);
-
-      const response = await fetch(`${config.apiUrl}/api/ai/generate-plan`, {
+      const response = await fetch('https://gym-ai-fitness.onrender.com/api/ai/generate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,18 +28,14 @@ const AiAssessment = () => {
         body: JSON.stringify(formData)
       });
 
-      console.log('Response status:', response.status);
-
       const data = await response.json();
-      console.log('Received data:', data);
-
+      
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate plan');
       }
 
-      navigate('/ai-plan', { state: { plan: data.plan } });
+      navigate('/ai-plan', { state: { plan: data } });
     } catch (err) {
-      console.error('Error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
